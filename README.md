@@ -37,6 +37,9 @@ RPC перед тем как он будет закрыт с `DEADLINE_EXCEEDED`
 - `pip install grpcio-tools` - генерация классов и методов для имплементации
 сервера и клиента на основании описанного `.proto` файла.
 
+## Пример от разработчиков
+https://github.com/grpc/grpc/tree/v1.56.0/examples/python/route_guide
+
 # gRPC on Flask
 # gRPC on FastAPI
 # Как использовать
