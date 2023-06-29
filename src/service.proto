@@ -1,0 +1,35 @@
+// Обязательный атрибут
+syntax = "proto3";
+// Описание сервиса
+service RouteGuide {
+    // Описание простого Унарного метода в сервисе
+    rpc GetFeature(Point) returns (Feature) {}
+    // Описание метода, когда клиент делает запрос, а Сервер производит стриминг
+    rpc ListFeatures(Rectangle) returns (stream Feature) {}
+    // Описание метода, когда клиент производит стриминг данных, в сервер
+    // возвращает какой то обобщенный ответ, после получения всех данных.
+    rpc RecordRoute(stream Point) returns (RouteSummary) {}
+    // Описание метода двунапревленного стриминга, при котором и клиент,
+    // и сервер производят стриминг.
+    rpc RouteChat(stream RouteNote) returns (stream RouteNote) {} 
+}
+
+// Описание типа сообщения, которое должно приниматься <> отправляться
+message Point {
+    int32 latitude = 1;
+    int32 longitude = 2;
+}
+
+message Rectangle {
+    // Пока не реализовано
+}
+message Feature {
+    string name = 1;
+    Point location = 2;
+}
+message RouteSummary {
+    // Пока не реализовано
+}
+message RouteNote {
+    // Пока не реализовано
+}

@@ -1,0 +1,17 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+grpcio-tools = "*"
+
+[dev-packages]
+
+[requires]
+python_version = "3.11"
+
+[scripts]
+gen_core = "python -m grpc_tools.protoc -I./src/ --python_out=./src/proto_core/ --pyi_out=./src/proto_core/ --grpc_python_out=./src/proto_core/ ./src/service.proto"
+start_server = "python src/service_server.py"
+start_client = "python src/service_client.py"
