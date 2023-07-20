@@ -44,8 +44,8 @@ https://github.com/grpc/grpc/tree/v1.56.0/examples/python/route_guide
 # gRPC on FastAPI
 # Как использовать
 - `pipenv install` - установка необходимых пакетов
-- `pipenv run gen_core` - Генерация сопуствующих классов для работы с описанными
-методами и сообщениями в `./src/service.proto`
-- `pipenv run start_server` - Запускает сервер gRPC на порту `50051`
-- `pipenv run start_client` - Выводит 3 сообщения, 1 из которых информирует о
+- `pipenv run grpc_gen_core` - Генерация сопуствующих классов для работы с описанными
+методами и сообщениями в `./grpc_src/service.proto`
+- `pipenv run grpc_start_server` - Запускает сервер gRPC на порту `50051`
+- `pipenv run grpc_start_client` - Выводит 3 сообщения, 1 из которых информирует о
 том, что объект не найден

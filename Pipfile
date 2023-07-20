@@ -12,6 +12,6 @@ grpcio-tools = "*"
 python_version = "3.11"
 
 [scripts]
-gen_core = "python -m grpc_tools.protoc -I./src/ --python_out=./src/proto_core/ --pyi_out=./src/proto_core/ --grpc_python_out=./src/proto_core/ ./src/service.proto"
-start_server = "python src/service_server.py"
-start_client = "python src/service_client.py"
+grpc_gen_core = "python -m grpc_tools.protoc -I./grpc_src/ --python_out=./grpc_src/proto_core/ --pyi_out=./grpc_src/proto_core/ --grpc_python_out=./grpc_src/proto_core/ ./grpc_src/service.proto"
+grpc_start_server = "python ./grpc_src/service_server.py"
+grpc_start_client = "python ./grpc_src/service_client.py"
