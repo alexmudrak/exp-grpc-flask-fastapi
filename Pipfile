@@ -5,6 +5,8 @@ name = "pypi"
 
 [packages]
 grpcio-tools = "*"
+fastapi = {version = "*", extras = ["all"]}
+grpclib = "*"
 
 [dev-packages]
 
@@ -12,6 +14,8 @@ grpcio-tools = "*"
 python_version = "3.11"
 
 [scripts]
-grpc_gen_core = "python -m grpc_tools.protoc -I./grpc_src/ --python_out=./grpc_src/proto_core/ --pyi_out=./grpc_src/proto_core/ --grpc_python_out=./grpc_src/proto_core/ ./grpc_src/service.proto"
-grpc_start_server = "python ./grpc_src/service_server.py"
-grpc_start_client = "python ./grpc_src/service_client.py"
+gen_core = "python -m grpc_tools.protoc -I./grpc_src/ --python_out=./grpc_src/proto_core/ --pyi_out=./grpc_src/proto_core/ --grpc_python_out=./grpc_src/proto_core/ ./grpc_src/service.proto"
+start_grpc_server = "python ./grpc_src/service_server.py"
+start_grpc_client = "python ./grpc_src/service_client.py"
+gen_rest = "python -m grpc_tools.protoc -I./grpc_fastapi --python_out=./grpc_fastapi/ --grpclib_python_out=./grpc_fastapi/ --pyi_out=./grpc_fastapi/ ./grpc_fastapi/service.proto"
+start_rest = "python -m uvicorn grpc_fastapi.main:app --reload --workers 1"

@@ -1,0 +1,14 @@
+syntax = "proto3";
+
+service FastApiGrpc {
+        rpc GetRecord (EntityRequest) returns (EntityResponse) {}
+    }
+
+message EntityRequest {
+        string id = 1;
+    }
+message EntityResponse {
+        string id = 1;
+        string name = 2;
+        string description = 3;
+    }

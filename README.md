@@ -40,12 +40,80 @@ RPC перед тем как он будет закрыт с `DEADLINE_EXCEEDED`
 ## Пример от разработчиков
 https://github.com/grpc/grpc/tree/v1.56.0/examples/python/route_guide
 
-# gRPC on Flask
-# gRPC on FastAPI
-# Как использовать
+## Как использовать
 - `pipenv install` - установка необходимых пакетов
 - `pipenv run grpc_gen_core` - Генерация сопуствующих классов для работы с описанными
 методами и сообщениями в `./grpc_src/service.proto`
 - `pipenv run grpc_start_server` - Запускает сервер gRPC на порту `50051`
 - `pipenv run grpc_start_client` - Выводит 3 сообщения, 1 из которых информирует о
 том, что объект не найден
+
+# gRPC on Flask
+# gRPC on FastAPI
+
+> Микросервис, который будет принимать по REST Api запрос на
+> создание сущности и возвращать её `id`, а по gRPC возвращать сущность
+> соответсвующую `id`.
+
+> Для имитации базы данных использовать список с словарями, которые будут
+> представлять сущность.
+
+```python
+DB_MOCK = [
+    {
+        "id": int,
+        "name": str,
+        "description": str,
+    },
+]
+```
+
+> RESTfull Api и gRPC должны запускаться одним сервисом и работать сообща
+> используя общие ресурсы.
+
+## Реализовано
+- Запуск gRPC сервера отдельной задачей в потоке `FastAPI`, перед
+запуском основного REST сервера.
+- Клиент gRPC к которому обращается REST enndpoint, для имитации запроса к
+стороннему ресурсу.
+- Два REST endpoint, для возможности добавить запись в БД и получить с нее
+данные
+
+## Запуск
+- Установка `pipenv install`
+- Генерация моделей из `.proto` файла `pipenv run gen_rest`
+- Запуск сервера `PYTHONPATH=./grpc_fastapi pipenv run start_rest`
+
+## Perfomance тесты
+
+- Кейс когда запущено 2 сервера (REST + gRPC), а так же gRPC клиент пытается
+получить данные от gRPC сервера и вернуть результат в REST запрос.
+
+```bash
+1 threads and 10 connections
+  Thread Stats   Avg      Stdev     Max   +/- Stdev
+    Latency     8.16ms    1.04ms  17.39ms   92.27%
+    Req/Sec     1.23k    59.43     1.41k    68.00%
+  36727 requests in 30.02s, 7.60MB read
+Requests/sec:   1223.40
+Transfer/sec:    259.26KB
+```
+
+- Кейс когда отключены gRPC сервер и gRPC клиент не пытается получить данные, а
+REST запрос сразу возвращает ответ.
+
+```bash
+1 threads and 10 connections
+  Thread Stats   Avg      Stdev     Max   +/- Stdev
+    Latency     0.85ms  428.67us  12.81ms   97.56%
+    Req/Sec    12.00k   360.94    12.61k    73.42%
+  359456 requests in 30.10s, 49.36MB read
+Requests/sec:  11942.17
+Transfer/sec:      1.64MB
+```
+
+> Данные тесты исключительно для оценки производительности на готовых данных,
+> которые показывают разницу в скорости обработки запросов, когда используется
+> дополнительный сервис / клиент для получения данных.
+
+Все тесты проводились с помощью `wrk -t1 -c10 -d30s http://127.0.0.1:8000/1`
